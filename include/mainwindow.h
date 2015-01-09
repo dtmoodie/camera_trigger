@@ -5,7 +5,7 @@
 #include <ros/ros.h>
 #include <QTreeWidgetItem>
 #include <QTimer>
-
+#include <viewport.h>
 namespace Ui {
 class MainWindow;
 }
@@ -17,6 +17,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    static std::vector<viewPort*> getViewports();
 private slots:
     void on_btnRefresh_clicked();
     void on_itemActivated(QTreeWidgetItem* item, int col);
@@ -26,6 +27,7 @@ private:
     Ui::MainWindow *ui;
     ros::NodeHandle n;
     QTimer*         processTimer;
+
 };
 
 #endif // MAINWINDOW_H

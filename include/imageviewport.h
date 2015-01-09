@@ -5,6 +5,9 @@
 #include "viewport.h"
 #include "image_transport/image_transport.h"
 #include <QStringList>
+#include <boost/circular_buffer.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/videoio.hpp>
 namespace Ui {
 class imageViewport;
 }
@@ -20,11 +23,15 @@ public:
     ~imageViewport();
 
     void callBack(const sensor_msgs::ImageConstPtr& msg);
+    void trigger(bool val);
+private slots:
+    void on_bufferSize_change(int val);
 private:
     Ui::imageViewport *ui;
     image_transport::ImageTransport  it;
     image_transport::Subscriber sub;
-
+    boost::circular_buffer<cv::Mat> image_buffer;
+    cv::VideoWriter* writer;
 };
 
 #endif // IMAGEVIEWPORT_H

@@ -22,10 +22,15 @@ viewPort::viewPort(QWidget *parent, QString topic, QString dataType) :
     ui(new Ui::viewPort)
 {
     ui->setupUi(this);
-
+    _topic = topic;
 }
 
 viewPort::~viewPort()
 {
     delete ui;
+}
+void
+viewPort::trigger(bool val)
+{
+    return;
 }

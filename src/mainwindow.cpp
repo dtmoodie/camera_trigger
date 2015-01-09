@@ -7,7 +7,10 @@
 #include <image_transport/image_transport.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <cv_bridge/cv_bridge.h>
-#include <viewport.h>
+
+#include "renderview.h"
+static std::vector<viewPort*> viewPorts;
+
 void
 recursiveAdd(QTreeWidgetItem* item, QStringList topic, QString dataType, int idx)
 {
@@ -43,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
     processTimer = new QTimer(this);
     processTimer->start(30);
     connect(processTimer, SIGNAL(timeout()), this, SLOT(on_process()));
+    on_btnRefresh_clicked();
 }
 
 MainWindow::~MainWindow()
@@ -94,10 +98,26 @@ MainWindow::on_itemActivated(QTreeWidgetItem* item, int col)
     }
     topic = "/" + topic;
     viewPort* newPort = viewPort::newViewport(this,topic,item->text(1));
-    ui->viewportLayout->addWidget(newPort);
+    if(newPort == NULL)
+        return;
+    viewPorts.push_back(newPort);
+    static int rowItr = 0;
+    static int colItr = 0;
+    ui->viewportLayout->addWidget(newPort,rowItr,colItr);
+    ++rowItr;
+    if(rowItr == 2)
+    {
+        rowItr = 0;
+        ++colItr;
+    }
 }
 void
 MainWindow::on_process()
 {
     ros::spinOnce();
+}
+std::vector<viewPort*>
+MainWindow::getViewports()
+{
+    return viewPorts;
 }
