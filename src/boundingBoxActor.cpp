@@ -160,7 +160,14 @@ boundingBoxActor::processPoints(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
             idx.push_back(i);
     }
     if(idx.size() == 0)
+    {
+        for(int i = 0; i < triggers.size(); ++i)
+        {
+            triggers[i].port->trigger(false);
+        }
         return false;
+    }
+
     CX = CY = CZ = 0;
     for(int i = 0; i < idx.size(); ++i)
     {

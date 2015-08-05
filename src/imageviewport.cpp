@@ -4,6 +4,7 @@
 #include <opencv2/highgui.hpp>
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/imgproc.hpp>
+#include <boost/date_time.hpp>
 
 
 static const QStringList TYPES(QStringList() << "sensor_msgs/Image");
@@ -29,6 +30,7 @@ imageViewport::imageViewport(QWidget *parent, QString topic, QString dataType) :
     connect(ui->bufferSize, SIGNAL(valueChanged(int)), this, SLOT(on_bufferSize_change(int)));
     _active = -1;
     ui->title->setText(topic);
+
 }
 
 imageViewport::~imageViewport()
@@ -69,6 +71,10 @@ imageViewport::callBack(const sensor_msgs::ImageConstPtr &msg)
         --_active;
         return;
     }
+    static boost::posix_time::ptime lastTime = boost::posix_time::microsec_clock::universal_time();
+    boost::posix_time::ptime currentTime = boost::posix_time::microsec_clock::universal_time();
+    boost::posix_time::time_duration delta = currentTime - lastTime;
+
     if(ui->heartBeat->value() != -1)
     {
         if(ui->heartBeat->value() == 0)
@@ -76,8 +82,7 @@ imageViewport::callBack(const sensor_msgs::ImageConstPtr &msg)
             writer->operator <<(img);
         }else
         {
-            int modu = frameCount & ui->heartBeat->value();
-            if(modu == 0)
+            if(delta.total_milliseconds() > ui->heartBeat->value() * 1000)
             {
                 writer->operator <<(img);
             }

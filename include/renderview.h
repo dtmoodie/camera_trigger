@@ -177,8 +177,6 @@ class renderView;
 class renderView : public viewPort
 {
     Q_OBJECT
-
-
 public:
 
     static bool acceptsType(QString dataType);
@@ -189,7 +187,7 @@ public:
     bool eventFilter(QObject *obj, QEvent *ev);
 
     void callBack(const sensor_msgs::PointCloud2 &pc2);
-private:
+protected:
 
     Ui::renderView *ui;
     boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
@@ -230,10 +228,10 @@ private:
     std::vector<vtkSmartPointer<boundingBoxActor> > _boundingBoxes;
     boundingBoxDialog*            currentSettingDialog;
 private slots:
-    void on_btnBuild_clicked();
-    void on_btnAddTrigger_clicked();
-    void on_btnPause_clicked();
-    void on_chkShowModel_stateChanged(int state);
+    virtual void on_btnBuild_clicked();
+    virtual void on_btnAddTrigger_clicked();
+    virtual void on_btnPause_clicked();
+    virtual void on_chkShowModel_stateChanged(int state);
 };
 
 #endif // RENDERVIEW_H

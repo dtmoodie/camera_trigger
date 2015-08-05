@@ -8,7 +8,9 @@
 #include <boost/circular_buffer.hpp>
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
-namespace Ui {
+
+namespace Ui
+{
 class imageViewport;
 }
 
@@ -22,16 +24,18 @@ public:
     explicit imageViewport(QWidget *parent = 0, QString topic = "", QString dataType = "");
     ~imageViewport();
 
-    void callBack(const sensor_msgs::ImageConstPtr& msg);
-    void trigger(bool val);
+    virtual void callBack(const sensor_msgs::ImageConstPtr& msg);
+    virtual void trigger(bool val);
+
 private slots:
-    void on_bufferSize_change(int val);
-private:
+    virtual void on_bufferSize_change(int val);
+protected:
     Ui::imageViewport *ui;
     image_transport::ImageTransport  it;
     image_transport::Subscriber sub;
     boost::circular_buffer<cv::Mat> image_buffer;
     cv::VideoWriter* writer;
+
 };
 
 #endif // IMAGEVIEWPORT_H

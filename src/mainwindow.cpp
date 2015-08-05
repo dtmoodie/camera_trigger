@@ -14,9 +14,21 @@ static std::vector<viewPort*> viewPorts;
 void
 recursiveAdd(QTreeWidgetItem* item, QStringList topic, QString dataType, int idx)
 {
-    if(idx > topic.size() - 1) return;
+
+    if(idx > topic.size() - 1)
+        return;
     if(idx == topic.size()-1)
     {
+        // Check if this exists already
+        for(int i = 0; i < item->childCount(); ++i)
+        {
+            if(item->child(i)->text(0) == topic[idx])
+            {
+                if(idx == topic.size() - 1)
+                    item->child(i)->setText(1, dataType);
+                return;
+            }
+        }
         QTreeWidgetItem* newItem = new QTreeWidgetItem(item);
         newItem->setText(0,topic[idx]);
         newItem->setText(1, dataType);
@@ -60,12 +72,15 @@ void
 MainWindow::on_btnRefresh_clicked()
 {
     ros::master::V_TopicInfo ti;
+
     QTreeWidget* tree = ui->topicView;
     if(!ros::master::getTopics(ti))
         return;
     for(ros::master::V_TopicInfo::iterator it = ti.begin(); it != ti.end(); ++it)
     {
         QString name = QString::fromLatin1(it->name.c_str());
+        if(name == "/usb_cam/image_raw")
+            int x = 5;
         QString dataType = QString::fromStdString(it->datatype);
         QStringList topic = name.split("/");
         bool added = false;
@@ -80,10 +95,13 @@ MainWindow::on_btnRefresh_clicked()
         }
         if(added == true)
             continue;
+
         // This top level topic doesn't exist yet, add it
         QTreeWidgetItem* item = new QTreeWidgetItem(tree);
         item->setText(0, topic[1]);
         recursiveAdd(item,topic,dataType,2);
+        if(topic.size() == 2)
+            item->setText(1, dataType);
     }
 }
 void

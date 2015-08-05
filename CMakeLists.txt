@@ -20,19 +20,23 @@ set(VKT_DIR "/usr/local/lib/cmake/vtk-6.2")
 FIND_PACKAGE(VTK REQUIRED)
 set  (VTK_LIBRARIES   vtkRendering vtkGraphics vtkHybrid QVTK)
 FIND_PACKAGE(PCL 1.8 REQUIRED features)
-message(${PCL_FEATURES_LIBRARIES})
+#message(${PCL_FEATURES_LIBRARIES})
 message("Found opencv version: ${OpenCV_VERSION}")
 message("Opencv install path: ${OpenCV_INSTALL_PATH}")
 file(GLOB src "src/*.cpp")
 file(GLOB hdr "include/*.h")
 file(GLOB forms "ui/*.ui")
-QT5_WRAP_UI(UIS ${forms})
-QT5_WRAP_CPP(MOC ${src} ${hdr})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+message(${src})
+#set(src "${src}${CMAKE_CURRENT_SOURCE_DIR}/qcustomplot/qcustomplot.cpp")
+#set(hdr "${hdr}${CMAKE_CURRENT_SOURCE_DIR}/qcustomplot/qcustomplot.h")
 
-foreach(f ${PCL_LIBS})
-    message(${f})
-endforeach(f)
+QT5_WRAP_UI(UIS ${forms})
+QT5_WRAP_CPP(MOC ${src} ${hdr} qcustomplot/qcustomplot.cpp qcustomplot/qcustomplot.h)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS} -std=c++11")
+
+#foreach(f ${PCL_LIBS})
+#    message(${f})
+#endforeach(f)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -139,6 +143,7 @@ include_directories(
         ${headers_moc}
         ${hdr}
         ${UIS}
+        qcustomplot/qcustomplot.cpp
 )
 link_directories(
     ${PCL_LIBRARY_DIRS}

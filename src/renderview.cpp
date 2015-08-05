@@ -84,7 +84,8 @@ customStyle::OnMouseMove()
         picked[0] = startPos[0] + vec[0];
         picked[1] = startPos[1] + vec[1];
         picked[2] = startPos[2] + vec[2];
-        vtkPoints* points = pts->GetPoints();
+        //vtkPoints* points = pts->GetPoints();
+        vtkPoints* points = actor->polyData->GetPoints();
         if(id == 8)
         {
             if(actor == NULL)
@@ -420,6 +421,7 @@ renderView::on_chkShowModel_stateChanged(int state)
     {
         pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> single_color(_modelPtr, 0, 0, 255);
         viewer->removePointCloud("model");
-        viewer->addPointCloud(_modelPtr, single_color, "model");
+        if(_modelPtr != nullptr)
+            viewer->addPointCloud(_modelPtr, single_color, "model");
     }
 }
