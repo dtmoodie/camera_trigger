@@ -1,9 +1,9 @@
 #include "imageviewport.h"
 #include "ui_imageviewport.h"
-#include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
 #include <cv_bridge/cv_bridge.h>
-#include <opencv2/imgproc.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 #include <boost/date_time.hpp>
 
 
@@ -42,6 +42,7 @@ imageViewport::~imageViewport()
 void
 imageViewport::callBack(const sensor_msgs::ImageConstPtr &msg)
 {
+    ROS_INFO("Image received");
     cv::Mat img;
     try
     {
@@ -55,7 +56,7 @@ imageViewport::callBack(const sensor_msgs::ImageConstPtr &msg)
     if(writer == NULL)
     {
         std::string path = _topic.replace('/', '_').toStdString();
-        writer = new cv::VideoWriter("/home/dan/build/"+path + ".avi", cv::VideoWriter::fourcc('X', '2', '6', '4'), 30, img.size(), img.channels() == 3);
+        writer = new cv::VideoWriter("/home/dan/build/"+path + ".avi", CV_FOURCC('X', '2', '6', '4'), 30, img.size(), img.channels() == 3);
     }
     static int frameCount = 0;
     QImage tmpImg((uchar*)img.data, img.cols, img.rows, img.step, QImage::Format_RGB888);

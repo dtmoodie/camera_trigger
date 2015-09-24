@@ -36,7 +36,7 @@ public:
     static customStyle* New();
     customStyle();
 
-    vtkTypeRevisionMacro(customStyle, vtkInteractorStyleTrackballCamera);
+    //vtkTypeRevisionMacro(customStyle, vtkInteractorStyleTrackballCamera);
 
     virtual void OnLeftButtonDown();
     virtual void OnLeftButtonUp();
@@ -54,8 +54,8 @@ public:
     vtkSmartPointer<PointManipulatorActor> pointManipulator;
     boundingBoxActor* actor;
 };
-vtkCxxRevisionMacro(customStyle, "$Revision: 1.1 $")
-
+//vtkCxxRevisionMacro(customStyle, "$Revision: 1.1 $")
+//
 class InteractorStyle2 : public vtkInteractorStyleTrackballActor
 {
   public:
@@ -232,6 +232,7 @@ private slots:
     virtual void on_btnAddTrigger_clicked();
     virtual void on_btnPause_clicked();
     virtual void on_chkShowModel_stateChanged(int state);
+        virtual void on_pushBUtton_clicked();
 };
 
 #endif // RENDERVIEW_H

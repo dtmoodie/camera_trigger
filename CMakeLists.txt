@@ -16,7 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
 FIND_PACKAGE(Qt5 COMPONENTS Gui Widgets Core OpenGL PrintSupport)
 FIND_PACKAGE(OpenCV REQUIRED core imgproc highgui)
 set(OpenCV_LIBS opencv_highgui opencv_imgproc opencv_core)
-set(VKT_DIR "/usr/local/lib/cmake/vtk-6.2")
+set(VKT_DIR "/usr/local/lib/cmake/vtk-6.3")
 FIND_PACKAGE(VTK REQUIRED)
 set  (VTK_LIBRARIES   vtkRendering vtkGraphics vtkHybrid QVTK)
 FIND_PACKAGE(PCL 1.8 REQUIRED features)

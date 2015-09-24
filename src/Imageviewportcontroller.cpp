@@ -1,9 +1,9 @@
 #include "Imageviewportcontroller.h"
 #include "ui_imageviewport.h"
-#include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
 #include <cv_bridge/cv_bridge.h>
-#include <opencv2/imgproc.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 #include <boost/date_time.hpp>
 
 static const QStringList TYPES(QStringList() << "sensor_msgs/Image" << "theora_image_transport/Packet");
@@ -43,10 +43,11 @@ ImageViewportController::ImageViewportController(QWidget *parent, QString topic,
 
 ImageViewportController::~ImageViewportController()
 {
+    delete writer;
 }
 void ImageViewportController::callBack(const sensor_msgs::ImageConstPtr& msg)
 {
-
+    ROS_INFO("Image received");
     cv::Mat img;
     try
     {
@@ -60,7 +61,7 @@ void ImageViewportController::callBack(const sensor_msgs::ImageConstPtr& msg)
     if(writer == NULL)
     {
         std::string path = _topic.replace('/', '_').toStdString();
-        writer = new cv::VideoWriter("/home/dan/build/"+path + ".avi", cv::VideoWriter::fourcc('X', '2', '6', '4'), 30, img.size(), img.channels() == 3);
+        writer = new cv::VideoWriter(path + ".avi", CV_FOURCC('M', 'J', 'P', 'G'), 30, img.size(), img.channels() == 3);
     }
     static int frameCount = 0;
     boost::posix_time::ptime thisTime = boost::date_time::microsec_clock<boost::posix_time::ptime>::universal_time();
@@ -184,7 +185,10 @@ void ImageViewportController::plotBandwidth(double val, double time)
     bandwidthPlot->graph(0)->addData(x,y);
     bandwidthPlot->xAxis->setLabel("Time (ms)");
     bandwidthPlot->yAxis->setLabel("Bandwidth (MB/s)");
+
+    //bandwidthPlot->rescaleAxes();
     bandwidthPlot->xAxis->setRange(min, max);
-    bandwidthPlot->yAxis->setRange(0, 30);
+    bandwidthPlot->yAxis->setRange(0, 70);
+    bandwidthPlot->setInteractions((QCP::Interactions)255);
     bandwidthPlot->replot();
 }

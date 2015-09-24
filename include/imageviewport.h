@@ -6,8 +6,9 @@
 #include "image_transport/image_transport.h"
 #include <QStringList>
 #include <boost/circular_buffer.hpp>
-#include <opencv2/core.hpp>
-#include <opencv2/videoio.hpp>
+#include <opencv2/core/core.hpp>
+//#include <opencv2/videoio.hpp>
+#include <opencv2/highgui/highgui.hpp>
 
 namespace Ui
 {

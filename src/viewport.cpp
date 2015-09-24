@@ -12,8 +12,8 @@ viewPort* viewPort::newViewport(QWidget* parent, QString topic, QString dataType
         return new ImageViewportController(parent,topic,dataType);
     if(imageViewport::acceptsType(dataType))
         return new imageViewport(parent,topic,dataType);
-    //if(RenderViewportController::acceptsType(dataType))
-      //  return new RenderViewportController(parent,topic,dataType);
+    if(RenderViewportController::acceptsType(dataType))
+        return new RenderViewportController(parent,topic,dataType);
     if(renderView::acceptsType(dataType))
         return new renderView(parent,topic,dataType);
 

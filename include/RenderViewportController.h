@@ -22,6 +22,7 @@ public:
 private slots:
     void on_btnBuild_clicked();
     void on_dblSearchDist_changed(double val);
+    void on_pushButton_clicked();
     //void on_btnAddTrigger_clicked();
     //void on_btnPause_clicked();
     //void on_chkShowModel_stateChanged(int state);
@@ -35,4 +36,6 @@ private:
 
     dynamic_reconfigure::Config             conf;
     QString controlName;
+    size_t frameCount;
+    bool modelBuilt;
 };

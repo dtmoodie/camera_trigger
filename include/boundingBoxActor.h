@@ -51,7 +51,7 @@ public:
     boundingBoxActor();
     bool processPoints(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
 
-    vtkTypeRevisionMacro(boundingBoxActor, vtkOpenGLActor)
+    //vtkTypeRevisionMacro(boundingBoxActor, vtkOpenGLActor)
     void selectPoint(vtkIdType id);
     boundingBox getBoundingBox();
     vtkSmartPointer<vtkPolyData> polyData;
@@ -65,4 +65,4 @@ public:
     std::vector<trigger> triggers;
     float CX, CY, CZ;
 };
-vtkCxxRevisionMacro(boundingBoxActor, "$Revision: 1.1 $")
+//vtkCxxRevisionMacro(boundingBoxActor, "$Revision: 1.1 $")

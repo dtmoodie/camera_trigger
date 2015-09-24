@@ -7,7 +7,7 @@
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/conversions.h>
 #include <boost/algorithm/cxx11/iota.hpp>
-#include <opencv2/highgui.hpp>
+#include <opencv2/highgui/highgui.hpp>
 #include <stdio.h>
 #include <boundingBoxActor.h>
 #include <pcl/features/moment_invariants.h>
@@ -164,15 +164,17 @@ renderView::renderView(QWidget* parent, QString topic, QString dataType) :
 
     viewer->addCoordinateSystem();
     renderWidget->update();
-    ui->gridLayout->addWidget(renderWidget,3,0,1,3);
+    ui->gridLayout->addWidget(renderWidget,4,0,1,4);
+    std::cout << "Subscribing to topic " << topic.toStdString() << std::endl;
     if(topic.size() > 0)
     {
+
         sub = n.subscribe(topic.toStdString(), 1, &renderView::callBack, this);
         cloud.reset(new pcl::PCLPointCloud2());
         _cloudPtr.reset(new pcl::PointCloud<pcl::PointXYZ>);
     }
     connect(ui->chkShowModel, SIGNAL(stateChanged(int)), this, SLOT(on_chkShowModel_stateChanged(int)));
-
+    connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(on_pushBUtton_clicked()));
 }
 
 renderView::~renderView()
@@ -388,6 +390,7 @@ renderView::on_btnAddTrigger_clicked()
     viewer->addActorToRenderer(actor);
     actor->myLabel->setParent(this);
     ui->triggerLayout->addWidget(actor->myLabel);
+    actor->myLabel->show();
     actor->myLabel->installEventFilter(this);
     actor->parameters.push_back(boost::shared_ptr<parameter>(new moment(2,0,0,"U200")));
     actor->parameters.push_back(boost::shared_ptr<parameter>(new moment(0,2,0,"U020")));
@@ -424,4 +427,9 @@ renderView::on_chkShowModel_stateChanged(int state)
         if(_modelPtr != nullptr)
             viewer->addPointCloud(_modelPtr, single_color, "model");
     }
+}
+void renderView::on_pushBUtton_clicked()
+{
+    _modelTree.reset();
+    viewer->removePointCloud("model");
 }
